@@ -42,5 +42,8 @@ yarn-error.log*
 .stylelintcache
 .env
 
+# Cypress test files
+*.cy.tsx
+
 # Cypress test videos
 cypress/videos/

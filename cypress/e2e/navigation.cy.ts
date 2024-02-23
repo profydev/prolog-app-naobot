@@ -42,6 +42,32 @@ describe("Sidebar Navigation", () => {
       // check that text is not rendered
       cy.get("nav").contains("Issues").should("not.exist");
     });
+
+    function parseMailto(mailtoString: string) {
+      const [mailto, params] = mailtoString.split("?");
+      const recipient = mailto.split(":")[1];
+      const result: { [index: string]: string } = { recipient };
+      params.split("&").forEach((param: string) => {
+        const [key, encoded] = param.split("=");
+        result[key] = decodeURIComponent(encoded);
+      });
+      return result;
+    }
+
+    it("support opens mail client", () => {
+      cy.get("nav")
+        .contains("Support")
+        .should("have.attr", "href")
+        .should("be.a", "string")
+        .as("mailtoString");
+      cy.get<string>("@mailtoString")
+        .then(parseMailto)
+        .then(console.log)
+        .should("deep.equal", {
+          recipient: "support@prolog-app.com",
+          subject: "Support Request:",
+        });
+    });
   });
 
   context("mobile resolution", () => {
