@@ -36,11 +36,37 @@ describe("Sidebar Navigation", () => {
       cy.get("nav").contains("Collapse").click();
 
       // check that links still exist and are functionable
-      cy.get("nav").find("a").should("have.length", 5).eq(1).click();
+      cy.get("nav").find("a").should("have.length", 6).eq(1).click();
       cy.url().should("eq", "http://localhost:3000/dashboard/issues");
 
       // check that text is not rendered
       cy.get("nav").contains("Issues").should("not.exist");
+    });
+
+    function parseMailto(mailtoString: string) {
+      const [mailto, params] = mailtoString.split("?");
+      const recipient = mailto.split(":")[1];
+      const result: { [index: string]: string } = { recipient };
+      params.split("&").forEach((param: string) => {
+        const [key, encoded] = param.split("=");
+        result[key] = decodeURIComponent(encoded);
+      });
+      return result;
+    }
+
+    it("support opens mail client", () => {
+      cy.get("nav")
+        .contains("Support")
+        .should("have.attr", "href")
+        .should("be.a", "string")
+        .as("mailtoString");
+      cy.get<string>("@mailtoString")
+        .then(parseMailto)
+        .then(console.log)
+        .should("deep.equal", {
+          recipient: "support@prolog-app.com",
+          subject: "Support Request:",
+        });
     });
   });
 
@@ -80,7 +106,7 @@ describe("Sidebar Navigation", () => {
       isInViewport("nav");
 
       // check that all links are rendered
-      cy.get("nav").find("a").should("have.length", 5);
+      cy.get("nav").find("a").should("have.length", 6);
 
       // Support button should be rendered but Collapse button not
       cy.get("nav").contains("Support").should("exist");
