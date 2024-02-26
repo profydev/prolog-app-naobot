@@ -1,5 +1,7 @@
 import capitalize from "lodash/capitalize";
 import mockProjects from "../fixtures/projects.json";
+import { ProjectStatus } from "@api/projects.types";
+import type { Project } from "@api/projects.types";
 
 describe("Project List", () => {
   beforeEach(() => {
@@ -22,6 +24,16 @@ describe("Project List", () => {
 
     it("renders the projects", () => {
       const languageNames = ["React", "Node.js", "Python"];
+      const statusNames = {
+        [ProjectStatus.info]: "stable",
+        [ProjectStatus.warning]: "warning",
+        [ProjectStatus.error]: "critical",
+      };
+      const statusColorNames = {
+        [ProjectStatus.info]: "success",
+        [ProjectStatus.warning]: "warning",
+        [ProjectStatus.error]: "error",
+      };
 
       // get all project cards
       cy.get("main")
@@ -32,7 +44,19 @@ describe("Project List", () => {
           cy.wrap($el).contains(languageNames[index]);
           cy.wrap($el).contains(mockProjects[index].numIssues);
           cy.wrap($el).contains(mockProjects[index].numEvents24h);
-          cy.wrap($el).contains(capitalize(mockProjects[index].status));
+          cy.wrap($el).contains(
+            capitalize(statusNames[(mockProjects[index] as Project).status]),
+          );
+          cy.wrap($el)
+            .find(
+              `div[class*='badge_${
+                statusColorNames[(mockProjects[index] as Project).status]
+              }']`,
+            )
+            .should(
+              "have.text",
+              capitalize(statusNames[(mockProjects[index] as Project).status]),
+            );
           cy.wrap($el)
             .find("a")
             .should("have.attr", "href", "/dashboard/issues");
