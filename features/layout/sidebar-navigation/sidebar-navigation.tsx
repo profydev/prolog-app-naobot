@@ -44,6 +44,11 @@ export function SidebarNavigation() {
             alt="logo"
             className={styles.logo}
           />
+          <img
+            src="/icons/logo-large.svg"
+            alt="logo"
+            className={styles.mobileLogo}
+          />
           <Button
             onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
             className={styles.menuButton}
