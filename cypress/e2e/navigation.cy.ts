@@ -10,37 +10,41 @@ describe("Sidebar Navigation", () => {
 
     it("links are working", () => {
       // check that each link leads to the correct page
-      cy.get("nav")
+      cy.get(":not(footer) > nav")
         .contains("Projects")
         .should("have.attr", "href", "/dashboard");
 
-      cy.get("nav")
+      cy.get(":not(footer) > nav")
         .contains("Issues")
         .should("have.attr", "href", "/dashboard/issues");
 
-      cy.get("nav")
+      cy.get(":not(footer) > nav")
         .contains("Alerts")
         .should("have.attr", "href", "/dashboard/alerts");
 
-      cy.get("nav")
+      cy.get(":not(footer) > nav")
         .contains("Users")
         .should("have.attr", "href", "/dashboard/users");
 
-      cy.get("nav")
+      cy.get(":not(footer) > nav")
         .contains("Settings")
         .should("have.attr", "href", "/dashboard/settings");
     });
 
     it("is collapsible", () => {
       // collapse navigation
-      cy.get("nav").contains("Collapse").click();
+      cy.get(":not(footer) > nav").contains("Collapse").click();
 
       // check that links still exist and are functionable
-      cy.get("nav").find("a").should("have.length", 6).eq(1).click();
+      cy.get(":not(footer) > nav")
+        .find("a")
+        .should("have.length", 6)
+        .eq(1)
+        .click();
       cy.url().should("eq", "http://localhost:3000/dashboard/issues");
 
       // check that text is not rendered
-      cy.get("nav").contains("Issues").should("not.exist");
+      cy.get(":not(footer) > nav").contains("Issues").should("not.exist");
     });
 
     function parseMailto(mailtoString: string) {
@@ -55,7 +59,7 @@ describe("Sidebar Navigation", () => {
     }
 
     it("support opens mail client", () => {
-      cy.get("nav")
+      cy.get(":not(footer) > nav")
         .contains("Support")
         .should("have.attr", "href")
         .should("be.a", "string")
@@ -96,26 +100,28 @@ describe("Sidebar Navigation", () => {
     it("toggles sidebar navigation by clicking the menu icon", () => {
       // wait for animation to finish
       cy.wait(500);
-      isNotInViewport("nav");
+      isNotInViewport(":not(footer) > nav");
 
       // open mobile navigation
       cy.get("img[alt='open menu']").click();
 
       // wait for animation to finish
       cy.wait(500);
-      isInViewport("nav");
+      isInViewport(":not(footer) > nav");
 
       // check that all links are rendered
-      cy.get("nav").find("a").should("have.length", 6);
+      cy.get(":not(footer) > nav").find("a").should("have.length", 6);
 
       // Support button should be rendered but Collapse button not
-      cy.get("nav").contains("Support").should("exist");
-      cy.get("nav").contains("Collapse").should("not.be.visible");
+      cy.get(":not(footer) > nav").contains("Support").should("exist");
+      cy.get(":not(footer) > nav")
+        .contains("Collapse")
+        .should("not.be.visible");
 
       // close mobile navigation and check that it disappears
       cy.get("img[alt='close menu']").click();
       cy.wait(500);
-      isNotInViewport("nav");
+      isNotInViewport(":not(footer) > nav");
     });
   });
 });
