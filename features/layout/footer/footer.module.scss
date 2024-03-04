@@ -1,0 +1,61 @@
+@use "@styles/color";
+@use "@styles/space";
+@use "@styles/font";
+@use "@styles/breakpoint";
+@use "@styles/z-index";
+@use "@styles/misc";
+
+.footer {
+  width: 100%;
+  background-color: color.$gray-50;
+  height: misc.$footer-height-mobile;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  @media (min-width: breakpoint.$desktop) {
+    height: misc.$footer-height;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.logo {
+  width: 33px;
+}
+
+.footerArea {
+  padding: space.$s2 0;
+  text-align: center;
+
+  @media (min-width: breakpoint.$desktop) {
+    padding: 0 space.$s8;
+  }
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navItem {
+  display: inline-block;
+  padding: space.$s3;
+}
+
+.navAnchor {
+  font: font.$text-md-medium;
+  color: color.$gray-500;
+  text-decoration: none;
+}
+
+.versionText {
+  color: color.$gray-400;
+  font: font.$text-md-regular;
+
+  @media (min-width: breakpoint.$desktop) {
+    order: -1;
+  }
+}
