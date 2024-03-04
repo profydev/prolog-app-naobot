@@ -1,4 +1,4 @@
-import { version } from './package.json';
+const { version } = require('./package.json'); // eslint-disable-line
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -11,4 +11,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
