@@ -1,4 +1,4 @@
-const { version } = require('./package.json'); // eslint-disable-line
+const { version } = require("./package.json"); // eslint-disable-line
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
