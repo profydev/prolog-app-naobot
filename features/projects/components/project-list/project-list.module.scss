@@ -15,3 +15,16 @@
     grid-template-columns: repeat(auto-fit, 400px);
   }
 }
+
+.loadingIcon {
+  > img {
+    width: 64px;
+    height: 64px;
+  }
+
+  height: 300px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
