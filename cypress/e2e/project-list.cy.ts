@@ -62,5 +62,30 @@ describe("Project List", () => {
             .should("have.attr", "href", "/dashboard/issues");
         });
     });
+
+    it("displays error message when projects aren't fetched", () => {
+      cy.intercept(
+        {
+          method: "GET",
+          url: "https://prolog-api.profy.dev/project",
+        },
+        {
+          forceNetworkError: true,
+        },
+      ).as("getNetworkFailure");
+
+      cy.visit("http://localhost:3000/dashboard");
+      cy.wait(10000);
+      cy.contains("There was a problem while loading the project data").should(
+        "be.visible",
+      );
+      cy.contains("Try again").click();
+
+      cy.intercept("GET", "https://prolog-api.profy.dev/project", {
+        fixture: "projects.json",
+      }).as("getProjects");
+
+      cy.wait("@getProjects");
+    });
   });
 });
