@@ -4,7 +4,7 @@ export function LoadingIcon() {
   const iconSrc = "/icons/loading-circle.svg";
 
   return (
-    <div>
+    <div className="loading">
       <img className={styles.icon} src={iconSrc} alt={`loading icon`} />
     </div>
   );

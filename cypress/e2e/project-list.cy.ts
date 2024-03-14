@@ -87,5 +87,19 @@ describe("Project List", () => {
 
       cy.wait("@getProjects");
     });
+
+    it("shows loading indicator when fetch is pending", () => {
+      cy.intercept({
+        method: "GET",
+        url: "https://prolog-api.profy.dev/project",
+      }).as("getProjects");
+
+      cy.visit("http://localhost:3000/dashboard");
+      cy.get(".loading img")
+        .should("have.attr", "src")
+        .should("equal", "/icons/loading-circle.svg");
+
+      cy.wait("@getProjects");
+    });
   });
 });
